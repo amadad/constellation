@@ -29,19 +29,19 @@ obj = json.loads(data)
 for o in obj:
     w = o["keyword"]
     tokens = w.split()
-    #total = 0
-    #vecs = []
+    total = 0
+    vecs = []
 
     for token in tokens:
         if token in model:
-            vec = model[token]
-            #vecs.append(model[token])
-    # if len(vecs) != 0:
-    #     for vec in vecs:
-    #         total = total + vec
-    #     avg = total / len(vecs)
+            #vec = model[token]
+            vecs.append(model[token])
+    if len(vecs) != 0:
+        for vec in vecs:
+            total = total + vec
+        avg = total / len(vecs)
     BRAND = o["brand"]
-    all_keywords.append( {"keyword": w, "vec": list(vec.tolist()), "frequency": o["frequency"], "brand": o["brand"]} )
+    all_keywords.append( {"topic": o["topic"], "keyword": w, "vec": list(vec.tolist()), "frequency": o["frequency"], "brand": o["brand"]} )
 
 ### sizing down vector data
 vector_list = list()
@@ -55,7 +55,7 @@ for object in all_keywords:
     word_list.append(object["keyword"])
 
 X = np.asarray(vector_list).astype('float64')
-tsne_model = TSNE(n_components=2, perplexity=8, early_exaggeration=24.0, learning_rate=200.0, random_state=0)
+tsne_model = TSNE(n_components=2, perplexity=15, early_exaggeration=12.0, learning_rate=200.0, random_state=0)
 np.set_printoptions(suppress=True)
 
 sizedown_vector = tsne_model.fit_transform(X).tolist()
@@ -65,5 +65,5 @@ for i, object in enumerate(all_keywords):
         object["vec"] = sizedown_vector[i]
 
 ### output new file
-with open(path + BRAND + "-vectors.json", 'w') as fp:
+with open(path + "all-vectors.json", 'w') as fp:
     json.dump(all_keywords, fp, indent=4)

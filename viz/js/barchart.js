@@ -1,8 +1,8 @@
 // upload data
-d3.json("backmarket-keywords.json", function(error, data) {
+d3.json("all-bigrams.json", function(error, data) {
   if (error) throw error;
   data = data.sort(function (a, b) {
-    return d3.ascending(a.frequency, b.frequency);
+    return d3.descending(a.keyword, b.keyword);
   })
 
   // set up svg using margin conventions - we'll need plenty of room on the left for labels
@@ -10,7 +10,7 @@ d3.json("backmarket-keywords.json", function(error, data) {
     top: 10,
     right: 25,
     bottom: 80,
-    left: 100
+    left: 200
   };
 
   var width = window.innerWidth;
@@ -59,16 +59,10 @@ d3.json("backmarket-keywords.json", function(error, data) {
   })
   .style('fill', function (d) {
     let who = d.brand;
-    if (who == "swappa") {
-      return '#44974e';
-    } else if (who == "bestbuy") {
-      return '#1549b7';
-    } else if (who == "secondipity") {
-      return '#85c842';
-    } else if (who == "gazelle") {
-      return '#ff8f34';
-    } else if (who == "backmarket") {
-      return '#000000';
+    if (who == "schwab") {
+      return '#45a0db';
+    } else if (who == "tda") {
+      return '#5eb43d';
     }
   })
   .attr("height", y.rangeBand())
@@ -87,20 +81,17 @@ d3.json("backmarket-keywords.json", function(error, data) {
   })
   //x position is 3 pixels to the right of the bar
   .attr("x", function (d) {
-    return x(d.frequency) + 5;
+    if (d.brand == "tda" && d.keyword == "information" || d.brand == "tda" && d.keyword == "plan" || d.brand == "schwab" && d.keyword == "market" || d.brand == "schwab" && d.keyword == "time" || d.brand == "schwab" && d.keyword == "money") {
+      return x(d.frequency) - 25;
+    } else if (d.brand == "schwab" && d.keyword == "account") {
+      return x(d.frequency) - 33;
+    } else if (d.brand == "tda" && d.keyword == "mutual fund" || d.brand == "tda" && d.keyword == "mutual funds") {
+      return x(d.frequency) - 25;
+    } else {
+      return x(d.frequency) + 5;
+    }
   })
   .text(function (d) {
-    let who = d.brand;
-    if (who == "swappa") {
-      return d.frequency;
-    } else if (who == "bestbuy") {
-      return d.original;
-    } else if (who == "secondipity") {
-      return d.frequency;
-    } else if (who == "gazelle") {
-      return d.frequency;
-    } else if (who == "backmarket") {
-      return d.frequency;
-    }
+    return d.frequency;
   });
 });

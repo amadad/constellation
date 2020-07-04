@@ -1,0 +1,26 @@
+@font-face {
+  font-family: TaubSans-Regular;
+  src: url('fonts/TaubSans-Regular.woff2') format('woff2');
+}
+
+body {
+  font-family: "Arial", sans-serif;
+}
+
+.bar {
+  fill: #5f89ad;
+}
+
+.axis {
+  font-size: 14px;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  display: none;
+}
+
+.label {
+  font-size: 10px;
+}

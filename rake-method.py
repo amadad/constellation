@@ -4,7 +4,7 @@ import pandas as pd
 import argparse
 import os
 
-BRAND = "secondipity"
+BRAND = "schwab"
 min_value = 10
 
 rake_csv = {}

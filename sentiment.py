@@ -16,8 +16,8 @@ args = parser.parse_args()
 if args.file != "-":
     tweets = pd.read_csv(args.file)
 
-for i in range(len(tweets['Tweet'])):
-        a=tweets['Tweet'][i]
+for i in range(len(tweets['posts'])):
+        a=tweets['posts'][i]
         corpus.append(a)
 
 for tweet in corpus:

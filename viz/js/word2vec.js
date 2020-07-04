@@ -6,6 +6,7 @@ var svgContainer = d3.select("body").append("svg")
 .attr("width", width)
 .attr("height", height)
 
+console.log("hi")
 
 var x = d3.scaleLinear()
 .domain([0,width])
@@ -26,7 +27,7 @@ svgContainer
 // .attr("stroke","grey")
 .call(d3.axisRight(y));
 
-d3.json("all-vectors(no verbs).json", function(error, data) {
+d3.json("all-vectors.json", function(error, data) {
   if (error) throw error;
   //console.log(data);
 
@@ -40,42 +41,28 @@ d3.json("all-vectors(no verbs).json", function(error, data) {
   /*Create the circle for each block */
   var circle = elemEnter.append("circle")
   .attr("cx", function (d) {
-    let who = d.brand;
-    if (who == "swappa") {
-      let posX = map(d.vec[0],-61.02, 58.57,50,width-70);
-      //let posX = map(d.vec[0],-61.02, 58.57,50,800);
-      let posY = map(d.vec[1],-65.39, 78.06,50,height-50);
-      d.pos = [posX,posY];
-      return posX
-    } else if (who == "bestbuy") {
-      let posX = map(d.vec[0],-61.02, 58.57,50,width-70);
-      //let posX = map(d.vec[0],-61.02, 58.57,850,width-70);
-      let posY = map(d.vec[1],-65.39, 78.06,50,height-50);
-      d.pos = [posX,posY];
-      return posX
-    }
+    let posX = map(d.vec[0],-175.81, 239.65,50,width-200);
+    let posY = map(d.vec[1],-173.3, 179.29,50,height-50);
+    d.pos = [posX,posY];
+    return posX
   })
   .attr("cy", function (d) {
-    let posY = map(d.vec[1],-65.39, 78.06,50,height-50);
+    let posY = map(d.vec[1],-173.3, 179.29,50,height-50);
     return posY
   })
   .attr("r", function (d) {
-    let who = d.brand;
-    if (who == "swappa") {
-      let radius = map(d.frequency,1568,17840,2,15);
-      return radius;
-    } else if (who == "bestbuy") {
-      let radius = map(d.frequency,51,252,2,15);
-      return radius;
-    }
+    let radius = map(d.frequency,4,9,2,15);
+    return radius;
   })
   // .attr("stroke","black")
   .style('fill', function (d) {
     let who = d.brand;
-    if (who == "swappa") {
-      return '#44974e';
-    } else if (who == "bestbuy") {
-      return '#1549b7';
+    if (who == "michelin") {
+      return '#005b90ff';
+    } else if (who == "tireCo") {
+      return '#cc4125ff';
+    } else if (who == "telematic") {
+      return '#e69138ff';
     }
   });
 
@@ -87,7 +74,7 @@ d3.json("all-vectors(no verbs).json", function(error, data) {
       let next = data[i];
 
       let d = dist(centroid.pos[0],centroid.pos[1],next.pos[0],next.pos[1]);
-      if (d < 40) {
+      if (d < 110) {
         // Create a horizontal link from the first node to the second
         const link = d3.linkHorizontal()({
           source: [centroid.pos[0],centroid.pos[1]],
@@ -109,13 +96,13 @@ d3.json("all-vectors(no verbs).json", function(error, data) {
     elemEnter.append("text")
     .attr("class", "keywords")
     .attr("dx", function (d) {
-      return d.pos[0]+5
+      return d.pos[0] + Math.random() * -7;
     })
     .attr("dy", function (d) {
-      return d.pos[1]-10
+      return d.pos[1] + Math.random() * -10
     })
-    .text(function(d){return d.keyword})
-    .style("font-size", "10px")
+    .text(function(d){return d.topic})
+    .style("font-size", "12px")
 
   });
 
